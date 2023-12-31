@@ -36,7 +36,7 @@ class AuthController extends Controller
             return $this->basic_response(null, 'User not found', 404, false);
         }
         if (!Hash::check($data['password'], $user->password)) {
-            return $this->basic_response(null, 'Credentials is wrong', 400, false);
+            return $this->basic_response(null, 'Password is wrong', 400, false);
         }
         $token = $user->createToken('login', ['role:all'])->plainTextToken;
         $response = [
