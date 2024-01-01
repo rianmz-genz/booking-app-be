@@ -38,6 +38,9 @@ class AuthController extends Controller
         if (!Hash::check($data['password'], $user->password)) {
             return $this->basic_response(null, 'Password is wrong', 400, false);
         }
+        if (!$user->is_active) {
+            return $this->basic_response(null, 'User not active', 400, false);
+        }
         $token = $user->createToken('login', ['role:all'])->plainTextToken;
         $response = [
             'token' => $token,

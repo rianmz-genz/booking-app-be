@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RegisterRequest extends FormRequest
+class StadiumCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,14 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'max:100', 'email'],
-            'fullname' => ['required', 'max:100'],
-            'role' => ['required', 'max:100', 'in:admin,customer'],
+            'name' => ['required', 'max:100'],
+            'address' => ['required', 'max:300'],
             'phone' => ['required', 'max:100'],
-            'password' => ['required', 'max:100'],
-            'is_active' => ['nullable', 'boolean'],
+            'description' => ['required'],
+            'images' => ['required', 'array'],
+            'open_at' => ['required', 'boolean'],
+            'closed_at' => ['required'],
+            'stadium_category_id' => ['required']
         ];
     }
 

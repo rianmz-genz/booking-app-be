@@ -15,19 +15,24 @@ class AuthTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function testSuccessRegister(): void
+    public function testSuccessRegisterAdmin(): void
     {
         User::truncate();
         $response = $this->post('api/auth/register', [
             'email' => 'adrian@gmail.com',
             'password' => 'password',
-            'name' => 'adrian aji'
+            'phone' => '0891829182',
+            'fullname' => 'adrian aji',
+            'role' => 'admin',
+            'is_active' => true
         ]);
         Log::info(json_encode($response));
         $response->assertStatus(201)->assertJsonStructure([
             'data' => [
                 'id',
-                'name',
+                'fullname',
+                'role',
+                'phone',
                 'email'
             ],
             'message',
@@ -35,7 +40,31 @@ class AuthTest extends TestCase
             'code'
         ]);
     }
-
+    public function testSuccessRegisterCustomer(): void
+    {
+        User::truncate();
+        $response = $this->post('api/auth/register', [
+            'email' => 'adrian@gmail.com',
+            'password' => 'password',
+            'phone' => '0891829182',
+            'fullname' => 'adrian aji',
+            'role' => 'customer',
+            'is_active' => true
+        ]);
+        Log::info(json_encode($response));
+        $response->assertStatus(201)->assertJsonStructure([
+            'data' => [
+                'id',
+                'fullname',
+                'role',
+                'phone',
+                'email'
+            ],
+            'message',
+            'status',
+            'code'
+        ]);
+    }
     public function testEmailAlreadyRegistered(): void
     {
         User::truncate();
@@ -43,7 +72,8 @@ class AuthTest extends TestCase
         $response = $this->post('api/auth/register', [
             'email' => 'test@gmail.com',
             'password' => 'password',
-            'name' => 'adrian aji'
+            'phone' => '0891829182',
+            'fullname' => 'adrian aji',
         ]);
         $response->assertStatus(400)->assertJsonStructure([
             'data',
@@ -59,17 +89,32 @@ class AuthTest extends TestCase
             'email' => 'test@gmail.com',
             'password' => 'password',
         ]);
-        Log::info(json_encode($response));
         $response->assertStatus(200)->assertJsonStructure([
             'data' => [
                 'token',
                 'user' =>
                 [
                     'id',
-                    'name',
-                    'email'
+                    'fullname',
+                    'email',
+                    'phone',
+                    'is_active'
                 ],
             ],
+            'message',
+            'status',
+            'code'
+        ]);
+    }
+
+    public function testLoginUserNotActive()
+    {
+        $response = $this->post('api/auth/login', [
+            'email' => 'not@gmail.com',
+            'password' => 'password',
+        ]);
+        $response->assertStatus(400)->assertJsonStructure([
+            'data',
             'message',
             'status',
             'code'
