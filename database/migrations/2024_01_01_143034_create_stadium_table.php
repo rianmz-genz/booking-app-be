@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('stadium_category_id');
             $table->timestamps();
 
-            $table->foreign('stadium_category_id')->references('id')->on('stadium_categories');
+            $table->foreign('stadium_category_id')->references('id')->on('stadium_categories')->cascadeOnDelete();
         });
     }
 

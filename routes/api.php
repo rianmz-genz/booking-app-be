@@ -23,6 +23,7 @@ Route::prefix('/auth')->group(function () {
 
 Route::prefix('/stadiums')->group(function () {
     Route::post('', [StadiumController::class, 'create']);
+    Route::get('', [StadiumController::class, 'getAll']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

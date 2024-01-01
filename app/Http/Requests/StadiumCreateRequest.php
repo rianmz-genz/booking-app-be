@@ -29,7 +29,7 @@ class StadiumCreateRequest extends FormRequest
             'phone' => ['required', 'max:100'],
             'description' => ['required'],
             'images' => ['required', 'array'],
-            'open_at' => ['required', 'boolean'],
+            'open_at' => ['required'],
             'closed_at' => ['required'],
             'stadium_category_id' => ['required']
         ];
