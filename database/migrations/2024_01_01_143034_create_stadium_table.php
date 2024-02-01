@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('stadiums', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name')->nullable(false)->unique('stadium_name_index');
             $table->string('address')->nullable(false);
             $table->string(
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->json('images')->nullable(false);
             $table->string('open_at')->nullable(false);
             $table->string('closed_at')->nullable(false);
-            $table->unsignedBigInteger('stadium_category_id');
+            $table->uuid('stadium_category_id');
             $table->timestamps();
 
             $table->foreign('stadium_category_id')->references('id')->on('stadium_categories')->cascadeOnDelete();

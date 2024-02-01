@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stadium extends Model
+class Stadium extends BaseModel
 {
     protected $table = 'stadiums';
-    protected $primaryKey = 'id';
-    protected $keyType = 'int';
-    public $timestamps = true;
-    public  $incrementing = true;
     protected $fillable = [
         'name',
         'address',

@@ -14,7 +14,8 @@ class StadiumResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
+            'id' => $this->id,
             'name' => $this->name,
             'address' => $this->address,
             'phone' => $this->phone,
@@ -23,5 +24,13 @@ class StadiumResource extends JsonResource
             'open_at' => $this->open_at,
             'closed_at' => $this->closed_at,
         ];
+
+        // Check if the category relationship has been loaded
+        if ($this->relationLoaded('category')) {
+            $data['category'] = new StadiumCategoryResource($this->category);
+        }
+
+        return $data;
+    
     }
 }
