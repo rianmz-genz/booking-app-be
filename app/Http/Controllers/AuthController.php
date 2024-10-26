@@ -21,11 +21,11 @@ class AuthController extends Controller
         $data = $request->validated();
         $existingUserCount = User::where('email', $data['email'])->count();
         if ($existingUserCount > 0) {
-            return $this->basic_response(null, 'Email already taken', 400, false);
+            return $this->error_response( 'Email already taken', 400);
         }
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
-        return $this->basic_response(new UserResource($user), 'Success to register user', 201);
+        return $this->success_response(new UserResource($user), 'Success to register user', 201);
     }
 
     public function login(LoginRequest $request)
@@ -33,19 +33,19 @@ class AuthController extends Controller
         $data = $request->validated();
         $user = User::where('email', $data['email'])->first();
         if (!$user) {
-            return $this->basic_response(null, 'User not found', 404, false);
+            return $this->error_response('User not found', 404);
         }
         if (!Hash::check($data['password'], $user->password)) {
-            return $this->basic_response(null, 'Password is wrong', 400, false);
+            return $this->error_response('Password is wrong', 400);
         }
         if (!$user->is_active) {
-            return $this->basic_response(null, 'User not active', 400, false);
+            return $this->error_response('User not active', 400);
         }
         $token = $user->createToken('login', ['role:all'])->plainTextToken;
         $response = [
             'token' => $token,
             'user' => new UserResource($user)
         ];
-        return $this->basic_response($response, 'Success to login');
+        return $this->success_response($response, 'Success to login');
     }
 }
